@@ -1,0 +1,238 @@
+{
+  "name" : "APEC1621-T for testing",
+  "id" : "APEC1621-T",
+  "version" : "2012-05-23",
+  "study_id" : "APEC1621",
+  "stratum_id" : "stratum1",
+  "description" : "Afatinib in EGFR activating mutation",
+  "target_id" : 750691,
+  "target_name" : "Afatinib",
+  "gene" : "EGFR",
+  "treatment_arm_drugs" : [
+    {
+      "drug_id" : "750691",
+      "name" : "Afatinib"
+    }
+  ],
+  "assay_rules" : [
+    {
+      "type" : "IHC",
+      "gene" : "PIK3CA",
+      "assay_result_status" : "POSITIVE",
+      "assay_variant" : "PRESENT",
+      "level_of_evidence" : 2.0,
+      "description": "This is a description"
+    }
+  ],
+  "diseases" : [
+    {
+      "disease_code_type":"ICD-O",
+      "disease_code":"8200/0",
+      "disease_name" : "Bronchioloalveolar carcinoma",
+      "exclusion": true
+    },
+    {
+      "disease_code_type":"ICD-O",
+      "disease_code":"8200/1",
+      "disease_name" : "Lung adenocarcinoma",
+      "exclusion": true
+    },
+    {
+      "disease_code_type":"ICD-O",
+      "disease_code":"8200/2",
+      "disease_name" : "Lung adenocar. w/ bronch. feat.",
+      "exclusion": false
+    },
+    {
+      "disease_code_type":"ICD-O",
+      "disease_code":"8200/3",
+      "disease_name" : "Non-small cell lung cancer, NOS",
+      "exclusion": true
+    },
+    {
+      "disease_code_type":"ICD-O",
+      "disease_code":"8200/4",
+      "disease_name" : "Squamous cell lung carcinoma",
+      "exclusion": true
+    },
+    {
+      "disease_code_type":"ICD-O",
+      "disease_code":"8200/5",
+      "disease_name" : "Small Cell Lung Cancer",
+      "exclusion": false
+    }
+  ],
+  "exclusion_drugs" : [
+    {
+       "drug_id" : "750691",
+       "name" : "Afatinib"
+    },
+    {
+      "drug_id" : "8675309",
+      "name" : "Tutonib"
+    }
+  ],
+  "snv_indels" : [
+    {
+      "variant_type": "snp",
+      "gene" : "EGFR",
+      "identifier" : "COSM6224",
+      "protein" : "p.L858R",
+      "level_of_evidence" : 1,
+      "chromosome" : "chr7",
+      "position" : "55259515",
+      "ocp_reference" : "T",
+      "ocp_alternative" : "G",
+      "public_med_ids" : [
+        "20573926",
+        " 19692684",
+        " 20022809"
+      ],
+      "inclusion" : true,
+      "arm_specific" : false
+    },
+    {
+      "variant_type": "snp",
+      "gene" : "EGFR",
+      "identifier" : "COSM6252",
+      "protein" : "p.G719S",
+      "level_of_evidence" : 2.0,
+      "chromosome" : "chr7",
+      "position" : "55241707",
+      "ocp_reference" : "G",
+      "ocp_alternative" : "A",
+      "public_med_ids" : [
+        "26051236"
+      ],
+      "inclusion" : false,
+      "arm_specific" : false
+    },
+    {
+      "variant_type" : "del",
+      "gene" : "EGFR",
+      "identifier" : "COSM26038",
+      "protein" : "p.K745_E749del",
+      "level_of_evidence" : 1.0,
+      "chromosome" : "chr7",
+      "position" : "55242462",
+      "ocp_reference" : "CAAGGAATTAAGAGAA",
+      "ocp_alternative" : "C",
+      "public_med_ids" : [
+        "26051236"
+      ],
+      "inclusion" : true,
+      "arm_specific" : false
+    },
+    {
+      "variant_type" : "del",
+      "gene" : "EGFR",
+      "identifier" : "COSM1190791",
+      "protein" : "p.K745_A750delinsT",
+      "level_of_evidence" : 1.0,
+      "chromosome" : "chr7",
+      "position" : "55242463",
+      "ocp_reference" : "AAGGAATTAAGAGAAG",
+      "ocp_alternative" : "A",
+      "public_med_ids" : [
+        "26051236"
+      ],
+      "inclusion" : false,
+      "arm_specific" : false
+    }
+  ],
+  "copy_number_variants" : [
+    {
+      "variant_type" : "cnv",
+      "gene" : "MET",
+      "identifier" : "MET",
+      "protein" : null,
+      "level_of_evidence" : 2.0,
+      "chromosome" : null,
+      "position": null,
+      "ocp_alternative": null,
+      "ocp_reference": null,
+      "public_med_ids": [
+        "18827604"
+      ],
+      "arm_specific": false,
+      "inclusion": false
+    },
+    {
+      "variant_type" : "cnv",
+      "gene" : "FGFR3",
+      "identifier" : "FGFR3",
+      "protein" : null,
+      "level_of_evidence" : 2.0,
+      "chromosome" : null,
+      "position": null,
+      "ocp_alternative": null,
+      "ocp_reference": null,
+      "public_med_ids": [],
+      "arm_specific": false,
+      "inclusion": false
+    }
+  ],
+  "gene_fusions" : [
+    {
+      "variant_type" : "fusion",
+      "gene" : "EGFR",
+      "identifier" : "EGFR.DelPositive.E1E8",
+      "protein" : null,
+      "level_of_evidence" : 1.0,
+      "chromosome" : null,
+      "position": null,
+      "ocp_alternative": null,
+      "ocp_reference": null,
+      "public_med_ids": [
+        "23777544"
+      ],
+      "arm_specific" : false,
+      "inclusion" : true
+    },
+    {
+      "variant_type" : "fusion",
+      "gene" : "FGFR2",
+      "identifier" : "FGFR2-OFD1.F17O3",
+      "protein" : null,
+      "level_of_evidence" : 3.0,
+      "chromosome" : null,
+      "position" : null,
+      "ocp_reference" : "C",
+      "ocp_alternative" : "C[chrX:13754596[",
+      "public_med_ids": [
+        "23777555"
+      ],
+      "arm_specific" : false,
+      "inclusion" : false
+    }
+  ],
+  "non_hotspot_rules" : [
+    {
+      "inclusion" : true,
+      "description" : "Sample description",
+      "public_med_ids": [
+        "18827604",
+        "21917678",
+        "23181703"
+      ],
+      "func_gene" : "EGFR",
+      "function" : "nonframeshiftDeletion",
+      "exon" : "19",
+      "oncomine_variant_class":"amplification",
+      "rare" : false,
+      "level_of_evidence" : 3.0,
+      "arm_specific" : false
+    },
+    {
+
+      "inclusion" : false,
+      "func_gene" : "EGFR",
+      "function" : "nonframeshiftInsertion",
+      "exon" : "20",
+      "rare" : false,
+      "level_of_evidence" : 2.0,
+      "arm_specific" : false
+    }
+  ]
+
+}

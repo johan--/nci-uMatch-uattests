@@ -1,0 +1,123 @@
+sudo: required
+services:
+  - docker
+# language: ruby
+# rvm:
+#   - 2.2.3
+language: node_js
+node_js:
+  - "6.0"
+before_install:
+  - echo $TRIGGER_REPO
+  - echo $CUC_TAG
+  # Set Ruby version
+  - rvm use --install --default --binary ruby-2.3.1
+  # Install chrome & chromium
+  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+  - sudo apt-get update && sudo apt-get install -y google-chrome-stable
+  # Install xvfb
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+before_script:
+  # Install chrome & chromium
+  - sudo apt-get update && sudo apt-get install -y awscli
+  # Install chrome & chromium
+  - sudo apt-get update && sudo apt-get install -y chromium-bsu
+  # Install UI test requirements
+  - npm install -g protractor@3.3.0 grunt-cli
+  - webdriver-manager update
+  # Update Ruby cucumber dependencies
+  - gem install bundler
+  - bundle install
+  # Update Node UI test dependencies
+  - cd nci-match-ui-bddtests
+  - npm install
+  - cd ..
+  # Version reporting
+  - ruby -v
+  - bundle --version
+  - gem --version
+  # Install xvfb
+  # - "export DISPLAY=:99.0"
+  # - "sh -e /etc/init.d/xvfb start"
+  # - sleep 3 # give xvfb some time to start
+  # Run Delete Script to empty DynamoDB before tests start
+  - cd DataSetup
+  # - ./dynamo_delete_script.rb -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -e 'https://dynamodb.us-east-1.amazonaws.com' -r us-east-1
+  # - ./dynamo_data_upload.rb -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -e 'https://dynamodb.us-east-1.amazonaws.com' -r us-east-1
+  - cd ..
+  # Reset ECOG Mock service Data
+  # - curl -X POST "http://pedmatch-int.nci.nih.gov:3000/restart" -d ''
+
+script:
+
+  - export P1="_p1"
+  - export P2="_p2"
+  - export P3="_p3"
+  # Run Cucumber @tag specific tests
+  # - cd uMATCH/PedMATCH; bundle exec parallel_cucumber features/ -o '-r features/step_definitions/ -r features/support/ -t $CUC_TAG$P1 --format json --out ../../results/output-$CUC_TAG$P1-$TEST_ENV_NUMBER.json --expand' -n 4 && bundle exec parallel_cucumber features/ -o '-r features/step_definitions/ -r features/support/ -t $CUC_TAG$P2 --format json --out ../../results/output-$CUC_TAG$P2-$TEST_ENV_NUMBER.json --expand' -n 4
+  - cd ../..
+  # Run Cucumber end to end tests
+  # - bundle exec cucumber --tags @EndtoEnd
+  # Install xvfb
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  # Run UI tests
+  - cd nci-match-ui-bddtests/
+  # - protractor config.js --cucumberOpts.tags='~@broken' --cucumberOpts.tags=$CUC_TAG$P1,$CUC_TAG$P2 --troubleshoot
+  # Generate html report
+  # - node support/generate_report.js
+  - cd ..
+  - ls -alt
+  - mv results/ results_critical/; mkdir results
+after_success:
+  #Run P3 cucumber tests
+  # - cd uMATCH/PedMATCH; bundle exec parallel_cucumber features/ -o '-r features/step_definitions/ -r features/support/ -t $CUC_TAG$P3 --format json --out ../../results/output-$CUC_TAG$P3-$TEST_ENV_NUMBER.json --expand' -n 4
+
+  #Run protractor tests
+  - cd ../../nci-match-ui-bddtests/
+  # - protractor config.js --cucumberOpts.tags='~@broken' --cucumberOpts.tags=$CUC_TAG$P3 --troubleshoot
+  # Generate html report
+  # - node support/generate_report.js
+  - cd ..
+  - ls -alt
+after_failure:
+    #Run P3 cucumber tests
+    # - cd uMATCH/PedMATCH; bundle exec parallel_cucumber features/ -o '-r features/step_definitions/ -r features/support/ -t $CUC_TAG$P3 --format json --out ../../results/output-$TEST_ENV_NUMBER.json --expand' -n 4
+
+    #Run protractor tests
+    - cd ../../nci-match-ui-bddtests/
+    # - protractor config.js --cucumberOpts.tags='~@broken' --cucumberOpts.tags=$CUC_TAG$P3 --troubleshoot
+    # Generate html report
+    # - node support/generate_report.js
+after_script:
+  #Set above, - export DATE=`TZ=America/New_York date "+%m-%d-%y-%H%M"`
+  - export DATE_TRIM=`TZ=America/New_York date "+%m-%d-%y"`
+  #Send result json to S3 for review
+  ######COMMENTING FOR NOW###########################
+#  - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results s3://cucumbertest-reports/$TRIGGER_REPO/$DATE-$TRAVIS_BUILD_NUMBER/ --region us-east-1 --recursive
+  ###################################################
+  # - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results_critical/cucumber_report.html s3://cucumber-test-reports/$DATE_TRIM/critical$CUC_TAG.html --region us-east-1
+  # - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results_critical/screenshot s3://cucumber-test-reports/$DATE_TRIM/screenshot --region us-east-1 --recursive
+
+  # - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results/cucumber_report.html s3://cucumber-test-reports/$DATE_TRIM/non-critical$CUC_TAG.html --region us-east-1
+  # - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results/screenshot s3://cucumber-test-reports/$DATE_TRIM/screenshot --region us-east-1 --recursive
+
+  #- aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results/result.json s3://cucumbertest-reports/$TRIGGER_REPO/$DATE-$TRAVIS_BUILD_NUMBER/ --region us-east-1
+######COMMENTING FOR NOW###########################
+#  - export DATE=`TZ=America/New_York date "+%m-%d-%y-%H%M"`
+#  - export TEST_REPORT='BDD Test Report'
+#  - cd ~/build/CBIIT/nci-uMatch-bddtests/ResultsUpload
+#  - ./update_google_drive.rb -d ~/build/CBIIT/nci-uMatch-bddtests/results/ -c config.json -t $CUC_TAG -b $TRAVIS_BUILD_NUMBER -f $TEST_REPORT
+###################################################
+  # - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/uMATCH/PedMATCH/results/output.json s3://cucumbertest-reports/$TRIGGER_REPO/$DATE-$TRAVIS_COMMIT/ --region us-east-1
+  # - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/nci-match-ui-bddtests/results/result.json s3://cucumbertest-reports/$TRIGGER_REPO/$DATE-$TRAVIS_COMMIT/ --region us-east-1
+notifications:
+  slack:
+    # secure: G2Vusym37c8C5Opee14JXdbVQGNe56e8G2xTM1zeBignME9/pbg3F4+DumvRV1pE6A/RHjlG3socbdIFnoMecG+nUXE3hymNoKrjI/FnPClDulxXllNFMZgWhafq6giX7bXgyaudNFVa2PZkPPzjr6SsGngcR/BAHcz2FqqGDr161TJMU/8BshnSMhxAfxSwFg2GnDMOgar2R3UYVkjhWqnIzM5YrpdeqzVofeM5kJaoq73gxQEnaneywLvHfSCSjDXSxIZm54L97kkpg3a4njZ/CHqUB19yY+IsE1tAygS3515+F6kZPOi1PJ7jPq5Ht3kFgpaTXrOmrXd8HeMJuKEdFKkgTD0NEIvYQfNmUZHhA25an+ePG3e45CNf8IMB0dyWmH6vY05lBujB/5plo2Fsx+HBjx14kq/z7ZWdX70qSYDJIWqLGGMnnHzkULLCBPhRKqXQsXERl0ST6BeDWCekEFtvFd+6gQjwcRgo3+AquUhobgFUVs4JzZYfStZEyxEG9sdxy1wVZjVWHCN+U75095oWytn1eAN4v6mVpo6O+zC1k/6k+8DzlWE9oArn8yRS+LVmjodaQvnAf5AX7ooEpEkzJSp1vWmqAFJOVrUyl8bg+KA4eQPI/37igmTZKKkxLD40kqM6wqW1o77vTMZvVrpNVK5G7m0GNYudEjc=
+    rooms:
+      - secure: G2Vusym37c8C5Opee14JXdbVQGNe56e8G2xTM1zeBignME9/pbg3F4+DumvRV1pE6A/RHjlG3socbdIFnoMecG+nUXE3hymNoKrjI/FnPClDulxXllNFMZgWhafq6giX7bXgyaudNFVa2PZkPPzjr6SsGngcR/BAHcz2FqqGDr161TJMU/8BshnSMhxAfxSwFg2GnDMOgar2R3UYVkjhWqnIzM5YrpdeqzVofeM5kJaoq73gxQEnaneywLvHfSCSjDXSxIZm54L97kkpg3a4njZ/CHqUB19yY+IsE1tAygS3515+F6kZPOi1PJ7jPq5Ht3kFgpaTXrOmrXd8HeMJuKEdFKkgTD0NEIvYQfNmUZHhA25an+ePG3e45CNf8IMB0dyWmH6vY05lBujB/5plo2Fsx+HBjx14kq/z7ZWdX70qSYDJIWqLGGMnnHzkULLCBPhRKqXQsXERl0ST6BeDWCekEFtvFd+6gQjwcRgo3+AquUhobgFUVs4JzZYfStZEyxEG9sdxy1wVZjVWHCN+U75095oWytn1eAN4v6mVpo6O+zC1k/6k+8DzlWE9oArn8yRS+LVmjodaQvnAf5AX7ooEpEkzJSp1vWmqAFJOVrUyl8bg+KA4eQPI/37igmTZKKkxLD40kqM6wqW1o77vTMZvVrpNVK5G7m0GNYudEjc=
+    template:
+       # - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} by %{author} %{result} in %{duration} subject: %{commit_subject} message: %{commit_message}"
+          - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} %{result} in %{duration} %{commit_message}"
