@@ -1,0 +1,11 @@
+# A sample Gemfile
+source "https://rubygems.org"
+gem 'java-properties', '=0.1.1'
+
+group :test, :development do
+  gem 'json', '1.8.3'
+  gem 'logger'
+  gem 'aws-sdk', '~>2'
+  gem 'aws-sdk-rails'
+  gem 'aws-record'
+end

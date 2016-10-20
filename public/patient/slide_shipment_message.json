@@ -1,0 +1,25 @@
+{
+  "header": {
+    "msg_guid": "3037ddec-0081-4e22-8448-721ab4ad76b4",
+    "msg_dttm": "2016-06-02T19:42:13+00:00"
+  },
+  "specimen_shipped": {
+    "study_id": "APEC1621",
+    "patient_id": "00001",
+    "type": "SLIDE",
+
+    "surgical_event_id": "00001-bsn",
+    "slide_barcode": "SB-00001",
+
+    "carrier": "Federal Express",
+    "tracking_id": "7956 4568 1235",
+    "shipped_dttm": "2016-06-02T19:42:13+00:00",
+    "destination": "MDA",
+
+    "internal_use_only": {
+      "stars_patient_id": "ABCXYZ",
+      "stars_specimen_id_slide": "ABCXYZ-0BJ6A5"
+
+    }
+  }
+}

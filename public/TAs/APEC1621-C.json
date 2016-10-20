@@ -1,0 +1,37 @@
+{
+  "treatment_arm_id": "APEC1621-C",
+  "name": "Treatment Arm C",
+  "version" : "2015-08-06",
+  "stratum_id": "1",
+  "study_id": "APEC1621",
+  "description" : "This TA is used by Cuke Test. Has only non-hotspot rules and no inclusion variants",
+  "target_id" : "Crizotinib",
+  "target_name" : "Crizotinib",
+  "gene" : "ALK",
+  "treatment_arm_drugs" : [
+    {
+      "drug_id" : "Crizotinib",
+      "name" : "Crizotinib",
+      "pathway" : "ALK"
+    }
+  ],
+  "exclusionDiseases" : [],
+  "exclusionDrugs" : [],
+  "exclusionCriterias" : [],
+  "assay_rules" : [],
+  "num_patients_assigned" : 0,
+  "treatment_arm_status" : "OPEN",
+  "snv_indels" : [],
+  "copy_number_variants" : [],
+  "gene_fusions" : [],
+  "unified_gene_fusions" : [],
+  "non_hotspot_rules" : [
+    {
+      "gene" : "ETV5a",
+      "exon" : "2",
+      "levelOfEvidence" : 3.0,
+      "inclusion" : true,
+      "armSpecific" : false
+    }
+  ]
+}

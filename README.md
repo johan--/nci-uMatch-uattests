@@ -1,14 +1,68 @@
-# nci-uMatch-uattests
-BDD Tests for PEDMatch
-[![Code Climate](https://codeclimate.com/github/CBIIT/nci-uMatch-uattests/badges/gpa.svg)](https://codeclimate.com/github/CBIIT/nci-uMatch-uattests)
-[![Issue Count](https://codeclimate.com/github/CBIIT/nci-uMatch-uattests/badges/issue_count.svg)](https://codeclimate.com/github/CBIIT/nci-uMatch-uattests)
+# NCI MATCH UI BDD TESTS
 
-The following cucumber tags are used in the project and have specific purposes.
+This Project houses all the tests for the NCI Match UI. The application under test (AUT) is built on Angular framework. This test project is being built with Protractor using the Cucumber framework. 
+
+## Project Setup
+Please make sure that the following are installed before running the project. 
+
+1. Install node
+
+   ```
+   brew install node
+   ```
+
+2. Install the following npm packages globally.
+
+   ```
+   $ npm install -g protractor
+   $ npm install -g cucumber
+   $ nom install -g grunt-cli
+   ```
+
+   This should also install `Selenium Webdriver` and thus `webdriver-manager`
+   Run the following commands in the terminal to make sure they are properly installed
+    
+   ```
+   $ protractor --version
+   $ cucumber.js --version
+   ```
+
+:exclamation: This projects needs protractor version 3.3.0, and cucumber 2.0.0 or higher.
+  
+3. Run npm install to get all modules added to `package.json`
+   ```
+   $ npm install
+   ```
+
+## Executing Tests
+Make sure that the webdriver is up to date and running
 ```
-@treatment_arm  - Triggered when nci-treatment-arm* projects are committed.
-@patients       - Triggered when nci-patient-* projects are committed.
-@rules          - Triggered when rules project is updated
-@ui             - Triggered when nci-match-ui project is updated
-@end_to_end     - Triggered upon completion of either @treatment_arm, @patients, or @rules AND @ui.   
-@seed_data      - Triggered for all the three above projects. These contain tests that deal with creation of data that can and should be used for preparing data. 
+webdriver-manager update
+webdriver-manager start
 ```
+
+In the terminal go to the project root and run
+For all tests:
+```
+protractor config.js
+```
+Using tags:
+```
+Run tests tagged with @tagname1 and @tagname2
+protractor config.js --cucumberOpts.tags='@tagname1, @tagname2'
+
+Run tests tagged with @tagname1, but avoid @tagname2
+protractor config.js --cucumberOpts.tags='@tagname1' --cucumberOpts.tags='~@tagname2' 
+```
+
+## Additional configuration changes. 
+The configuration settings present in the config.js can be altered at runtime by providing parameters. 
+
+For example if you need to override the baseUrl being used to something else, you can use the following commmand.
+ ```
+ protractor config.js --baseUrl='www.example.org'
+ ```
+
+### Contacts
+- Raseel Mohamed: raseel.mohamed@nih.gov
+- Vivek Ramani: vivek.ramani@nih.gov

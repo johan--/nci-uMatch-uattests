@@ -95,6 +95,24 @@ class DynamoDb
     list_tables.select { |table| table.match(regex)}
   end
 
+  def delete_treatment_arm_tables
+    @prefix = 'treatment_arm'
+    clear_tables_by_prefix
+  end
+
+  def delete_patient_tables
+    %w(assignment event patient shipment specimen variant variant_report).each do |table|
+      @prefix = hgtable
+      clear_tables_by_prefix
+    end
+  end
+
+  def delete_all_tables
+    delete_treatment_arm_tables
+    delete_patient_tables
+  end
+
+
   def clear_tables_by_prefix
     begin
       table_list = select_tables
@@ -154,7 +172,14 @@ class DynamoDb
     list.each do |keys|
       key = keys.flatten.first
       message << "Deleting #{key}: #{keys[key]} from #{table_name}"
-      @client.delete_item(table_name: table_name, key: keys)
+      begin
+        @client.delete_item(table_name: table_name, key: keys)
+      rescue  Aws::DynamoDB::Errors::ValidationException => e
+        puts "The keys in the the table #{table_name} have changed."
+      rescue => e
+        puts "Could not delete table #{table_name}"
+        p e.backtrace
+      end
     end
     LOG.log(message)
   end
@@ -176,6 +201,13 @@ class DynamoDb
   def clear_all_treatment_arm_tables
     LOG.log('Deleting tables treatment arm ecosystem')
     TableDetails.treatment_arm_tables.each do |table|
+      clear_table(table)
+    end
+  end
+
+  def clear_all_ion_tables
+    LOG.log('Deleting tables ion ecosystem')
+    TableDetails.ion_tables.each do |table|
       clear_table(table)
     end
   end

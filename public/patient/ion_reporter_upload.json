@@ -1,0 +1,9 @@
+{
+  "analysis_id": "SC_SA1CB_SC_SA1CB_a888_v1",
+  "site": "mocha",
+  "ion_reporter_id": "IR_WAO85",
+  "vcf_name": "IR_WAO85/patient_molecular_id/patient_analysis_id/test1.vcf",
+  "dna_bam_name": "IR_WAO85/patient_molecular_id/patient_analysis_id/dna.bam",
+  "cdna_bam_name": "IR_WAO85/patient_molecular_id/patient_analysis_id/cdna.bam",
+  "qc_name": "IR_WAO85/patient_molecular_id/patient_analysis_id/qc.pdf"
+}
