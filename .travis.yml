@@ -18,6 +18,7 @@ before_install:
   - sudo apt-get update && sudo apt-get install -y google-chrome-stable
   # Install xvfb
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+
 before_script:
   # Install chrome & chromium
   - sudo apt-get update && sudo apt-get install -y awscli
@@ -37,16 +38,12 @@ before_script:
   - bundle --version
   - gem --version
   # Run Delete Script to empty DynamoDB before tests start
-   - ./dynamo_delete_script.rb -a $AWS_ACCESS_KEY_ID -s $AWS_SECRET_ACCESS_KEY -e 'https://dynamodb.us-east-1.amazonaws.com' -r us-east-1
+  - ./dynamo_delete_script.rb -a $UAT_AWS_ACCESS_KEY_ID -s $UAT_AWS_SECRET_ACCESS_KEY -e 'https://dynamodb.us-east-1.amazonaws.com' -r us-east-1
   - cd ..
   # Reset ECOG Mock service Data
-   - curl -X POST "http://pedmatch-uat.nci.nih.gov:3000/restart" -d ''
+  - curl -X POST "http://pedmatch-uat.nci.nih.gov:3000/restart" -d ''
+
 script:
-
-  - export PATIENT_HOSTNAME=https://pedmatch-uat.nci.nih.gov/api/v1/patients
-  - export TA_HOSTNAME=https://pedmatch-uat.nci.nih.gov/api/v1/treatment_arms
-  - export IR_HOSTNAME=https://pedmatch-uat.nci.nih.gov
-
   # Install xvfb
    - "export DISPLAY=:99.0"
    - "sh -e /etc/init.d/xvfb start"
