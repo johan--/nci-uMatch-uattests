@@ -28,7 +28,7 @@ exports.config = {
         require: ['support/env.js',
             'features/step_definitions/*.js',
             'support/hooks.js' ],
-        format: 'json:../results/result.json'
+        format: 'json:results/result.json'
 
     }
 };
