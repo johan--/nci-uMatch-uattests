@@ -8,6 +8,11 @@ var fs = require('fs');
 var utilities = require('../../support/utilities.js')
 var json = require('json-update');
 const chai = require('chai');
+var sleep = require('sleep');
+
+var loginPageObj = require ('../../pages/loginPage');
+var dashboardPageObj = require ('../../pages/dashboardPage');
+
 module.exports = function () {
 
     this.Given(/^a treatment arm json file "([^"]*)" with id "([^"]*)", stratum "([^"]*)" and version "([^"]*)" is submitted to treatment_arm service$/, function (fname, ta_id, stratum, version, callback) {
@@ -219,9 +224,10 @@ module.exports = function () {
                 respMsg = JSON.stringify(response);
                 resp = JSON.parse(respMsg);
                 assert.equal(resp[0]["current_status"], "ASSAY_RESULTS_RECEIVED");
+
             });
-            callback();
         });
+        callback();
     });
 
 
@@ -252,7 +258,7 @@ module.exports = function () {
 
             console.log(resp[0]['pathology_status']);
             assert.equal(resp[0]["pathology_status"], path_status);
-
+            sleep.sleep(5); //sleep for 5 seconds
             var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+patient_id;
             utilities.getMethod_with_retry(uri, function(response) {
                 var respMsg;
@@ -261,8 +267,8 @@ module.exports = function () {
                 resp = JSON.parse(respMsg);
                 assert.equal(resp[0]["current_status"], "PATHOLOGY_REVIEWED");
             });
-            callback();
         });
+        callback();
     });
 
     this.Given(/^ion report is received with ion report id "([^"]*)", molecular id "([^"]*)", analysis id "([^"]*)" and tsv filename "([^"]*)" for the patient "([^"]*)"$/, function (ion_id, molecular_id, analysis_id, vcfFile, patient_id, callback) {
@@ -284,8 +290,30 @@ module.exports = function () {
             var resp;
             resp = response;
             assert.equal(resp['message'],"Item updated");
-            callback();
+
+            var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+patient_id;
+            sleep.sleep(5); //sleep for 5 seconds
+            utilities.getMethod_with_retry(uri, function(response) {
+                var respMsg;
+                var resp;
+                respMsg = JSON.stringify(response);
+                resp = JSON.parse(respMsg);
+                console.log(resp);
+                assert.equal(resp[0]["current_status"], "TISSUE_VARIANT_REPORT_RECEIVED");
+
+            });
         });
+        callback();
     });
+
+    this.When(/^a user navigates to the variant report for the patient "([^"]*)" and surgical event "([^"]*)" on the UI and clicks "([^"]*)" button$/, function (arg1, arg2, arg3, callback) {
+        // Write code here that turns the phrase above into concrete actions
+
+        loginPageObj.goToLoginPage();
+        loginPageObj.login(process.env.NCI_MATCH_USERID,process.env.NCI_MATCH_PASSWORD,false);
+
+
+    });
+
 };
 

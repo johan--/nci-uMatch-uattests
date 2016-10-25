@@ -46,6 +46,7 @@ var Utilities = function() {
             return flag;
         };
         var url = route
+        console.log("Get URL: "+url);
         request({
             url: url,
             json:true,
@@ -71,6 +72,7 @@ var Utilities = function() {
         args['data'] = data;
 
         var url = route;
+        console.log("Post URL: "+url);
         client.registerMethod("post", url, "POST");
 
         client.methods.post(args, function (dt, response) {
