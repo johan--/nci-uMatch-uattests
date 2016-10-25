@@ -2,8 +2,8 @@
  * Created by raseel.mohamed on 6/3/16
  */
 
-var utils = require ('./utilities');
-var dashboard = require ('dashboardPage');
+var utils = require ('../support/utilities');
+var dashboard = require ('./dashboardPage');
 
 var LoginPage = function() {
 
