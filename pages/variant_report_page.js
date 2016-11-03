@@ -12,7 +12,7 @@ var variant_report_page = function () {
     var ok_button = element(by.css('[ng-click="buttonClicked(button)"]'));
 
 
-    this.confirm_variant_report = function (callback){
+    this.confirm_variant_report = function (){
         dv.waitForAngular().then(function(){
             var confirm_button = dv.element(by.css('button[ng-click="confirmVariantReport(variantReport)"]'));
             dv.isElementPresent(confirm_button).then(function(elementPresent){
@@ -26,7 +26,7 @@ var variant_report_page = function () {
                     });
                 }
             });
-        }).then(callback);
+        });
     };
 };
 

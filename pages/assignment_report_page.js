@@ -11,7 +11,7 @@ var assignment_report_page = function () {
     var ok_button = element(by.buttonText('OK'));
 
 
-    this.confirm_assignment_report = function (callback){
+    this.confirm_assignment_report = function (){
         dv.waitForAngular().then(function(){
             var confirm_button = dv.element(by.css('button[ng-click="confirmAssignmentReport(assignmentReport)"]'));
             dv.element(by.linkText("Assignment Report - PENDING")).click().then (function(){
@@ -27,7 +27,7 @@ var assignment_report_page = function () {
                     }
                 });
             });
-        }).then(callback);
+        });
     };
 };
 

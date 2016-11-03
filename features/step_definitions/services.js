@@ -385,6 +385,7 @@ module.exports = function () {
 
     this.Then(/^the user logs out of MATCHBox$/, function(callback){
         dashboard_page_obj.logout();
+        dv.sleep(5000).then(callback);
     })
 };
 

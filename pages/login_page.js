@@ -22,18 +22,18 @@ var login_page = function() {
         });
     };
 
-    this.login = function(username, password, callback) {
+    this.login = function(username, password) {
         accessBtn.click().then(function () {
             dv.sleep(15000);
             utils.waitForElement(loginPopupPanel, 'Login Popup panel').then(function () {
                 dv.isElementPresent(prevMailId).then(function(prevLoginFlag){
                     if (prevLoginFlag == true){
-                        prevMailId.click().then(callback);
+                        prevMailId.click();
                     }else {
                         utils.waitForElement(email).then(function () {
                             email.sendKeys(username);
                             pass.sendKeys(password);
-                            loginbtn.click().then(callback);
+                            loginbtn.click();
                         });
                     }
                 });
