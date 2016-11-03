@@ -1,11 +1,10 @@
 {
-  "patient_id":"00001",
-  "study_id": "APEC1621",
-  "surgical_event_id":"00001-bsn",
-  "case_number": "case-1234",
-  "type": "ASSAY_RESULT_REPORTED",
-  "biomarker":"ICCPTENs",
-  "reported_date":"2016-06-15T13:12:09.071-05:00",
-  "ordered_date":"2016-06-15T13:11:09.071-05:00",
-  "result":"NEGATIVE"
+"patient_id":"3355",
+"study_id": "APEC1621",
+"surgical_event_id":"3355-bsn",
+"case_number": "case-3355",
+"type": "RESULT",
+"biomarker":"ICCPTENs",
+"reported_date":"2016-06-03T19:42:13+00:00",
+"result":"NEGATIVE"
 }

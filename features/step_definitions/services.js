@@ -9,12 +9,13 @@ var utilities = require('../../support/utilities.js')
 var json = require('json-update');
 const chai = require('chai');
 var sleep = require('sleep');
-
-var loginPageObj = require ('../../pages/loginPage');
-var dashboardPageObj = require ('../../pages/dashboardPage');
+var login_Page_obj = require ('../../pages/login_page');
+var dashboard_page_obj = require ('../../pages/dashboard_page');
+var variant_report_page_obj = require ('../../pages/variant_report_page');
+var assignment_report_page_obj = require ('../../pages/assignment_report_page');
 
 module.exports = function () {
-
+    this.World = require ('../step_definitions/world').World;
     this.Given(/^a treatment arm json file "([^"]*)" with id "([^"]*)", stratum "([^"]*)" and version "([^"]*)" is submitted to treatment_arm service$/, function (fname, ta_id, stratum, version, callback) {
         // Write code here that turns the phrase above into concrete actions
         console.log(process.env.PWD);
@@ -224,10 +225,11 @@ module.exports = function () {
                 respMsg = JSON.stringify(response);
                 resp = JSON.parse(respMsg);
                 assert.equal(resp[0]["current_status"], "ASSAY_RESULTS_RECEIVED");
-
+                callback();
             });
+
         });
-        callback();
+
     });
 
 
@@ -266,9 +268,11 @@ module.exports = function () {
                 respMsg = JSON.stringify(response);
                 resp = JSON.parse(respMsg);
                 assert.equal(resp[0]["current_status"], "PATHOLOGY_REVIEWED");
+                callback();
             });
+
         });
-        callback();
+
     });
 
     this.Given(/^ion report is received with ion report id "([^"]*)", molecular id "([^"]*)", analysis id "([^"]*)" and tsv filename "([^"]*)" for the patient "([^"]*)"$/, function (ion_id, molecular_id, analysis_id, vcfFile, patient_id, callback) {
@@ -291,29 +295,96 @@ module.exports = function () {
             resp = response;
             assert.equal(resp['message'],"Item updated");
 
-            var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+patient_id;
-            sleep.sleep(5); //sleep for 5 seconds
+            var uri = process.env.PATIENT_HOSTNAME + '/variant_reports?projections=[tsv_file_name]&patient_id='+patient_id;
+            sleep.sleep(15); //sleep for 25 seconds
             utilities.getMethod_with_retry(uri, function(response) {
                 var respMsg;
                 var resp;
                 respMsg = JSON.stringify(response);
                 resp = JSON.parse(respMsg);
-                console.log(resp);
-                assert.equal(resp[0]["current_status"], "TISSUE_VARIANT_REPORT_RECEIVED");
-
+                console.log(resp[0]["tsv_file_name"]);
+                assert.equal(resp[0]["tsv_file_name"], vcfFile.split(".")[0]+'.tsv');
+                callback();
             });
         });
-        callback();
+
     });
+
 
     this.When(/^a user navigates to the variant report for the patient "([^"]*)" and surgical event "([^"]*)" on the UI and clicks "([^"]*)" button$/, function (arg1, arg2, arg3, callback) {
-        // Write code here that turns the phrase above into concrete actions
 
-        loginPageObj.goToLoginPage();
-        loginPageObj.login(process.env.NCI_MATCH_USERID,process.env.NCI_MATCH_PASSWORD,false);
+        login_Page_obj.goto_login_page();
+        login_Page_obj.login(process.env.NCI_MATCH_USERID,process.env.NCI_MATCH_PASSWORD,false);
 
+        dv.sleep(5000).then(function(){
+            dashboard_page_obj.select_pending_variant_report(arg1,false);
 
+        }).then(function(){
+            variant_report_page_obj.confirm_variant_report();
+
+        }).then(callback);
     });
 
+    this.Then(/^the patient status is changed to "([^"]*)" for patient "([^"]*)"$/, function(arg1,arg2,callback){
+        var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+arg2;
+        sleep.sleep(15);
+        utilities.getMethod_with_retry(uri, function(response) {
+            var respMsg;
+            var resp;
+            respMsg = JSON.stringify(response);
+            resp = JSON.parse(respMsg);
+            console.log(resp);
+            assert.equal(resp[0]["current_status"], arg1);
+            callback();
+        });
+    });
+
+    this.When(/^a user navigates to the assignment report for the patient "([^"]*)" and analysis id "([^"]*)" on the UI and clicks "([^"]*)" button$/, function (arg1, arg2, arg3, callback) {
+
+        dv.sleep(5000).then(function(){
+            dashboard_page_obj.select_pending_assignment_report(arg1,false);
+
+        }).then(function(){
+            assignment_report_page_obj.confirm_assignment_report();
+
+        }).then(callback);
+    });
+
+    this.When(/^COG sends a ON_TREATMENT_ARM message to MATCHBox for patient "([^"]*)" to treatment arm "([^"]*)"$/, function (arg1, arg2, callback) {
+        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/COG_message.json', 'utf8'));
+        cog_message_json["patient_id"] = arg1;
+        cog_message_json["treatment_arm_id"] = arg2.split(":")[0];
+        cog_message_json["stratum_id"] = arg2.split(":")[1];
+        cog_message_json["status"] = "ON_TREATMENT_ARM";
+
+        var  uri = process.env.PATIENT_HOSTNAME + '/' + arg1;
+        console.log(cog_message_json);
+        utilities.postMethod(uri,cog_message_json,function(response){
+            var resp;
+            resp = response;
+            assert.equal(resp['message'],"Message has been processed successfully");
+            callback();
+        });
+    });
+
+    this.When(/^COG sends a REQUEST_ASSIGNMENT message to MATCHBox for patient "([^"]*)" with rebiopsy "([^"]*)"$/, function (arg1, arg2, callback) {
+        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/COG_request_assignment_message.json', 'utf8'));
+        cog_message_json["patient_id"] = arg1;
+        cog_message_json["rebiopsy"] = arg2;
+        cog_message_json["status"] = "REQUEST_ASSIGNMENT";
+
+        var  uri = process.env.PATIENT_HOSTNAME + '/' + arg1;
+        console.log(cog_message_json);
+        utilities.postMethod(uri,cog_message_json,function(response){
+            var resp;
+            resp = response;
+            assert.equal(resp['message'],"Message has been processed successfully");
+            callback();
+        });
+    });
+
+    this.Then(/^the user logs out of MATCHBox$/, function(callback){
+        dashboard_page_obj.logout();
+    })
 };
 

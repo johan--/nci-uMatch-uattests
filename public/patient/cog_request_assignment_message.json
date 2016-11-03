@@ -1,0 +1,19 @@
+{
+  "header": {
+    "msg_guid": "0f8fad5b-d9cb-469f-a165-80067728950e",
+    "msg_dttm": "2016-05-09T22:06:33+00:00"
+  },
+  "study_id": "APEC1621",
+  "patient_id": "1111",
+  "step_number": "2.0",
+  "status": "REQUEST_ASSIGNMENT | REQUEST_NO_ASSIGNMENT",
+  "status_date": "2016-05-10T22:05:33+00:00",
+  "rebiopsy": "Y|N",
+  "message": "Physician determines it is not in the patient’s best interest.",
+  "internal_use_only": {
+    "request_id": "4-654400",
+    "environment": "5",
+    "request": "REQUEST_ASSIGNMENT for patient_id 1111",
+    "treatment_id": "120"
+  }
+}

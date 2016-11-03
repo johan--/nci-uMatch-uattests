@@ -10,7 +10,16 @@ var client = new Client();
 
 var Utilities = function() {
 
+    this.waitForElement = function(element, message) {
+        return browser.wait(function (){
+            return browser.isElementPresent(element)
+        }, 15000, message + ' element is not visible.');
+    };
 
+    this.checkTitle = function(dv, title) {
+        console.log(dv.getTitle());
+        return expect(dv.getTitle()).to.eventually.equal(title);
+    };
 
     this.getMethod = function(route, fn){
         var args = {
@@ -51,7 +60,7 @@ var Utilities = function() {
             url: url,
             json:true,
             maxAttempts: 5,   // (default) try 5 times
-            retryDelay: 5000,  // (default) wait for 5s before trying again
+            retryDelay: 10000,  // (default) wait for 5s before trying again
             retryStrategy: myRetryStrategy // retry on 404
         },  function(err, response, body){
             if (response) {
