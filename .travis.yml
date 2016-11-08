@@ -58,8 +58,8 @@ script:
    - ls -alt
 after_script:
   #Upload Reports to S3
-  - aws s3 cp ~/build/CBIIT/nci-uMatch-uattests/results/cucumber_report.html s3://cucumber-test-reports/$DATE_TRIM/End-to-End_tests.html --region us-east-1
-  - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results/screenshot s3://cucumber-test-reports/$DATE_TRIM/screenshot --region us-east-1 --recursive
+  - aws s3 cp ~/build/CBIIT/nci-uMatch-uattests/results/cucumber_report.html s3://cucumber-reports/$DATE_TRIM/End-to-End_tests.html --region us-east-1
+  - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results/screenshot s3://cucumber-reports/$DATE_TRIM/screenshot --region us-east-1 --recursive
 
 notifications:
   slack:
