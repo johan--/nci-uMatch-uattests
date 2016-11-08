@@ -292,10 +292,10 @@ module.exports = function () {
 
         utilities.putMethod(uri,ion_reporter_upload_json,function(response){
             var resp;
-            resp = response;
-
-            console.log(typeof(resp));
-            assert.equal(resp['message'],"Item updated");
+            //resp = response;
+            resp = JSON.stringify(response);
+            console.log(JSON.parse(resp));
+            assert.equal(JSON.parse(resp)['message'],"Item updated");
 
             var uri = process.env.PATIENT_HOSTNAME + '/variant_reports?projections=[tsv_file_name]&patient_id='+patient_id;
             sleep.sleep(15); //sleep for 25 seconds
