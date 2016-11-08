@@ -289,13 +289,14 @@ module.exports = function () {
 
         var  uri = process.env.IR_HOSTNAME +  "/aliquot/"+molecular_id;
         console.log(ion_reporter_upload_json);
-
+        console.log(uri);
         utilities.putMethod(uri,ion_reporter_upload_json,function(response){
+
             var resp;
-            //resp = response;
-            resp = JSON.stringify(response);
-            console.log(JSON.parse(resp));
-            assert.equal(JSON.parse(resp)['message'],"Item updated");
+            resp = response;
+            //resp = JSON.stringify(response);
+            //console.log(JSON.parse(resp));
+            assert.equal(resp['message'],"Item updated");
 
             var uri = process.env.PATIENT_HOSTNAME + '/variant_reports?projections=[tsv_file_name]&patient_id='+patient_id;
             sleep.sleep(15); //sleep for 25 seconds
