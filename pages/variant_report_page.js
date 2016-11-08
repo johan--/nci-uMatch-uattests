@@ -21,6 +21,7 @@ var variant_report_page = function () {
                     dv.executeScript('arguments[0].click()', confirm_button).then(function(){
                     //confirm_button.click().then(function(){
                         ok_button.click().then (function(){
+                            dv.sleep(5000);
                             element(by.xpath(".//*[@id='navbar']/ul[1]/li[1]/a")).click();
                         });
                     });
