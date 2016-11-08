@@ -5,7 +5,7 @@
 'use strict';
 const assert = require('assert');
 var fs = require('fs');
-var utilities = require('../../support/utilities.js')
+var utilities = require('../../support/utilities.js');
 var json = require('json-update');
 const chai = require('chai');
 var sleep = require('sleep');
@@ -284,8 +284,8 @@ module.exports = function () {
         ion_reporter_upload_json["ion_reporter_id"] = ion_id;
         ion_reporter_upload_json["analysis_id"] = analysis_id;
         ion_reporter_upload_json["vcf_name"] = ion_id+'/'+molecular_id+'/'+analysis_id+'/'+vcfFile;
-        ion_reporter_upload_json["dna_bam_name"] = ion_id+'/'+molecular_id+'/'+analysis_id+'/'+"dna.bam"
-        ion_reporter_upload_json["cdna_bam_name"] = ion_id+'/'+molecular_id+'/'+analysis_id+'/'+"cdna.bam"
+        ion_reporter_upload_json["dna_bam_name"] = ion_id+'/'+molecular_id+'/'+analysis_id+'/'+"dna.bam";
+        ion_reporter_upload_json["cdna_bam_name"] = ion_id+'/'+molecular_id+'/'+analysis_id+'/'+"cdna.bam";
 
         var  uri = process.env.IR_HOSTNAME +  "/aliquot/"+molecular_id;
         console.log(ion_reporter_upload_json);
@@ -293,6 +293,8 @@ module.exports = function () {
         utilities.putMethod(uri,ion_reporter_upload_json,function(response){
             var resp;
             resp = response;
+
+            console.log(typeof(resp));
             assert.equal(resp['message'],"Item updated");
 
             var uri = process.env.PATIENT_HOSTNAME + '/variant_reports?projections=[tsv_file_name]&patient_id='+patient_id;
