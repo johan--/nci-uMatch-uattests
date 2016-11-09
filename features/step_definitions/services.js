@@ -288,6 +288,7 @@ module.exports = function () {
         ion_reporter_upload_json["cdna_bam_name"] = ion_id+'/'+molecular_id+'/'+analysis_id+'/'+"cdna.bam";
 
         var  uri = process.env.IR_HOSTNAME +  "/aliquot/"+molecular_id;
+
         console.log(ion_reporter_upload_json);
         console.log(uri);
         utilities.putMethod(uri,ion_reporter_upload_json,function(response){
@@ -354,7 +355,7 @@ module.exports = function () {
     });
 
     this.When(/^COG sends a ON_TREATMENT_ARM message to MATCHBox for patient "([^"]*)" to treatment arm "([^"]*)"$/, function (arg1, arg2, callback) {
-        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/COG_message.json', 'utf8'));
+        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/cog_message.json', 'utf8'));
         cog_message_json["patient_id"] = arg1;
         cog_message_json["treatment_arm_id"] = arg2.split(":")[0];
         cog_message_json["stratum_id"] = arg2.split(":")[1];
@@ -371,7 +372,7 @@ module.exports = function () {
     });
 
     this.When(/^COG sends a REQUEST_ASSIGNMENT message to MATCHBox for patient "([^"]*)" with rebiopsy "([^"]*)"$/, function (arg1, arg2, callback) {
-        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/COG_request_assignment_message.json', 'utf8'));
+        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/cog_request_assignment_message.json', 'utf8'));
         cog_message_json["patient_id"] = arg1;
         cog_message_json["rebiopsy"] = arg2;
         cog_message_json["status"] = "REQUEST_ASSIGNMENT";
