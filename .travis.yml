@@ -57,9 +57,11 @@ script:
    - cd ..
    - ls -alt
 after_script:
+  #Set above, - export DATE=`TZ=America/New_York date "+%m-%d-%y-%H%M"`
+  - export DATE_TRIM=`TZ=America/New_York date "+%m-%d-%y"`
   #Upload Reports to S3
   - aws s3 cp ~/build/CBIIT/nci-uMatch-uattests/results/cucumber_report.html s3://cucumber-reports/$DATE_TRIM/End-to-End_tests.html --region us-east-1
-  - aws s3 cp ~/build/CBIIT/nci-uMatch-bddtests/results/screenshot s3://cucumber-reports/$DATE_TRIM/screenshot --region us-east-1 --recursive
+  - aws s3 cp ~/build/CBIIT/nci-uMatch-uattests/results/screenshot s3://cucumber-reports/$DATE_TRIM/screenshot --region us-east-1 --recursive
 
 notifications:
   slack:
