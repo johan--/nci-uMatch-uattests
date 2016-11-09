@@ -5,6 +5,7 @@
   },
   "study_id": "APEC1621",
   "patient_id": "1111",
+  "step_number": "1.0",
   "status": "REQUEST_NO_ASSIGNMENT",
   "status_date": "2016-05-10T22:05:33+00:00",
   "message": "Physician determines it is not in the patient’s best interest.",
