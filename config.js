@@ -7,8 +7,8 @@ exports.config = {
     baseUrl: process.env.UI_HOSTNAME,  //when developing tests use http://localhost:9000',
 
     //seleniumAddress: 'http://localhost:4444/wd/hub',
-    //chromeOnly: true,
-    //directConnect: true,
+    chromeOnly: true,
+    directConnect: true,
     capabilities: {
         browserName: 'chrome',
         chromeOptions: {'args': ['--window-size=1690,1000']}

@@ -25,8 +25,8 @@ before_script:
   # Install chrome & chromium
   - sudo apt-get update && sudo apt-get install -y chromium-bsu
   # Install UI test requirements
-  - npm install -g protractor@3.3.0 grunt-cli
-  - webdriver-manager update --versions.chrome 2.21
+  - npm install -g protractor@4.0.9 grunt-cli
+  - webdriver-manager update # --versions.chrome 2.21
   # Update Node UI test dependencies
   - npm install
   # Update Ruby cucumber dependencies
