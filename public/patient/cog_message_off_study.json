@@ -1,0 +1,17 @@
+{
+  "header": {
+    "msg_guid": "0f8fad5b-d9cb-469f-a165-70867728950e",
+    "msg_dttm": "2016-05-09T22:06:33+00:00"
+  },
+  "study_id": "APEC1621",
+  "patient_id": "3366",
+  "step_number": "1.0",
+  "status": "OFF_STUDY",
+  "status_date": "2016-05-10T22:05:33+00:00",
+  "message": "death",
+  "internal_use_only": {
+    "request_id": "4-654149",
+    "environment": "4",
+    "request": "OFF_STUDY for patient_id 3366"
+  }
+}

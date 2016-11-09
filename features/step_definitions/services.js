@@ -331,7 +331,7 @@ module.exports = function () {
 
     this.Then(/^the patient status is changed to "([^"]*)" for patient "([^"]*)"$/, function(arg1,arg2,callback){
         var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+arg2;
-        sleep.sleep(15);
+        sleep.sleep(25);
         utilities.getMethod_with_retry(uri, function(response) {
             var respMsg;
             var resp;
@@ -376,6 +376,20 @@ module.exports = function () {
         cog_message_json["patient_id"] = arg1;
         cog_message_json["rebiopsy"] = arg2;
         cog_message_json["status"] = "REQUEST_ASSIGNMENT";
+
+        var  uri = process.env.PATIENT_HOSTNAME + '/' + arg1;
+        console.log(cog_message_json);
+        utilities.postMethod(uri,cog_message_json,function(response){
+            var resp;
+            resp = response;
+            assert.equal(resp['message'],"Message has been processed successfully");
+            callback();
+        });
+    });
+
+    this.When(/^COG sends a REQUEST_NO_ASSIGNMENT message to MATCHBox for patient "([^"]*)"$/, function (arg1, callback) {
+        var cog_message_json = JSON.parse(fs.readFileSync('public/patient/cog_request_no_assignment_message.json', 'utf8'));
+        cog_message_json["patient_id"] = arg1;
 
         var  uri = process.env.PATIENT_HOSTNAME + '/' + arg1;
         console.log(cog_message_json);
