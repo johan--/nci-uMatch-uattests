@@ -10,9 +10,9 @@ Feature: Load treatment arms in to MATCHbox system
     Then the treatment_arm "<id>" with stratum "<stratum>" is created in MatchBox with status as "<status>"
     Examples:
       | taFileName                    | id                    | stratum | version    | status |
-      | APEC1621-A.json               | APEC1621-A            | 1       | 2016-10-12 | OPEN   |
-      | APEC1621-B.json               | APEC1621-B            | 1       | 2016-10-12 | OPEN   |
-      | APEC1621-C.json               | APEC1621-C            | 1       | 2016-10-12 | OPEN   |
+      | APEC1621-A.json               | APEC1621-A            | 100     | 2016-10-12 | OPEN   |
+      | APEC1621-B.json               | APEC1621-B            | 100     | 2016-10-12 | OPEN   |
+      | APEC1621-C.json               | APEC1621-C            | 100     | 2016-10-12 | OPEN   |
       | SNV_location_intronic_TA.json | SNV_location_intronic | 100     | 2015-08-06 | OPEN   |
 
 
