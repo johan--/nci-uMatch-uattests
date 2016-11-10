@@ -71,8 +71,8 @@ Feature: End-to-End patient assignment process tests
 #    Then the patient status is changed to "REQUEST_NO_ASSIGNMENT" for patient "<patient_id>"
     Then the user logs out of MATCHBox
     Examples:
-      | patient_id | se_id    | mol_id | slide_code | PTEN     | MLH1     | vcfFile    | analysis_id | treatment_arm:stratum |
-      | E2E-03     | event-03 | mol-03 | sb-03      | ICCPTENs | ICCMLH1s | E2E-03.vcf | job3        | APEC1621-A:1          |
+      | patient_id | se_id    | mol_id | slide_code | PTEN     | MLH1     | vcfFile    | analysis_id | treatment_arm:stratum     |
+      | E2E-03     | event-03 | mol-03 | sb-03      | ICCPTENs | ICCMLH1s | E2E-03.vcf | job3        | SNV_location_intronic:100 |
 
 
   Scenario Outline: Patient on a treatment arm receives a REQUEST ASSIGNMENT message from COG with rebiopsy flag set to Y
@@ -104,7 +104,7 @@ Feature: End-to-End patient assignment process tests
     Then the patient status is changed to "ON_TREATMENT_ARM" for patient "<patient_id>"
     Examples:
       | patient_id | se_id    | mol_id | slide_code | PTEN     | MLH1     | vcfFile    | analysis_id | treatment_arm:stratum | se_id1     | mol_id1  | slide_code1 | analysis_id1 | vcfFile1 | treatment_arm:stratum1    |
-      | E2E-04     | event-04 | mol-04 | sb-04      | ICCPTENs | ICCMLH1s | E2E-04.vcf | job4        | APEC1621-A:1          | event-04-1 | mol-04-1 | sb-04-1     | job4-1       | E2E-04-1 | SNV_location_intronic:100 |
+      | E2E-04     | event-04 | mol-04 | sb-04      | ICCPTENs | ICCMLH1s | E2E-04.vcf | job4        | APEC1621-A:100        | event-04-1 | mol-04-1 | sb-04-1     | job4-1       | E2E-04-1 | SNV_location_intronic:100 |
 
 #    Scenario Outline: MATCHBox does not find a treatment arm for the patient
 
