@@ -299,7 +299,7 @@ module.exports = function () {
             //console.log(JSON.parse(resp));
             assert.equal(resp['message'],"Item updated");
 
-            var uri = process.env.PATIENT_HOSTNAME + '/variant_reports?projections=[tsv_file_name]&patient_id='+patient_id;
+            var uri = process.env.PATIENT_HOSTNAME + '/variant_reports?projections=[tsv_file_name]&patient_id='+patient_id+'&tsv_file_name='+vcfFile.split(".")[0]+'.tsv';
             sleep.sleep(15); //sleep for 25 seconds
             utilities.getMethod_with_retry(uri, function(response) {
                 var respMsg;
@@ -332,7 +332,7 @@ module.exports = function () {
     this.Then(/^the patient status is changed to "([^"]*)" for patient "([^"]*)"$/, function(arg1,arg2,callback){
         var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+arg2;
         sleep.sleep(25);
-        utilities.getMethod_with_retry(uri, function(response) {
+        utilities.getMethod_with_retry_until_expected_patient_status(uri, arg1, function(response) {
             var respMsg;
             var resp;
             respMsg = JSON.stringify(response);

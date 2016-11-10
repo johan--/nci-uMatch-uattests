@@ -71,7 +71,30 @@ var Utilities = function() {
         });
     };
 
-
+    this.getMethod_with_retry_until_expected_patient_status = function(route, expVal, fn){
+        function myRetryStrategy(err, response, body){
+            var flag = false;
+            if (JSON.parse(JSON.stringify(body))["current_status"] == expVal){
+                flag = true;
+            };
+            return flag;
+        };
+        var url = route;
+        console.log("Get URL: "+url);
+        request({
+            url: url,
+            json:true,
+            maxAttempts: 5,   // (default) try 5 times
+            retryDelay: 10000,  // (default) wait for 5s before trying again
+            retryStrategy: myRetryStrategy // retry until expected status is received
+        },  function(err, response, body){
+            if (response) {
+                console.log(body);
+                console.log('The number of request attempts: ' + response.attempts);
+            }
+            fn(body);
+        });
+    };
     this.postMethod = function(route, data, fn){
         var args = {
             data: '',

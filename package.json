@@ -27,7 +27,7 @@
     "grunt-cli": "^1.2.0",
     "json-update": "^3.0.0",
     "node-rest-client": "^2.0.1",
-    "protractor": "^4.0.9",
+    "protractor": "^4.0.13",
     "protractor-cucumber": "^0.1.8",
     "protractor-cucumber-framework": "^0.6.0",
     "requestretry": "^1.12.0",
