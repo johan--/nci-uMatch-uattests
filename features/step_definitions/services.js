@@ -87,7 +87,7 @@ module.exports = function () {
             assert.equal(resp['message'],"Message has been processed successfully");
         });
 
-        var uri = process.env.PATIENT_HOSTNAME + '/' +patient_id+'/specimens?projections=[surgical_event_id]';
+        var uri = process.env.PATIENT_HOSTNAME + '/' +patient_id+'/specimens?projections=[surgical_event_id]&surgical_event_id='+se_id;
 
         utilities.getMethod_with_retry(uri, function(response) {
             var respMsg;
