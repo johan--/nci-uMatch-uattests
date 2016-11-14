@@ -129,13 +129,13 @@ module.exports = function () {
             assert.equal(resp['message'],"Message has been processed successfully");
         });
 
-        var uri = process.env.PATIENT_HOSTNAME + '/shipments?projections=[molecular_dna_id]&molecular_id='+mol_id;
+        var uri = process.env.PATIENT_HOSTNAME + '/shipments?projections=[molecular_id]&molecular_id='+mol_id;
         utilities.getMethod_with_retry(uri, function(response) {
             var respMsg;
             var resp;
             respMsg = JSON.stringify(response);
             resp = JSON.parse(respMsg);
-            assert.equal(resp[0]["molecular_dna_id"], "00012D");
+            assert.equal(resp[0]["molecular_id"], mol_id);
 
             var uri = process.env.PATIENT_HOSTNAME + '?projections=[current_status]&patient_id='+patient_id;
             utilities.getMethod_with_retry(uri, function(response) {

@@ -67,8 +67,8 @@ Feature: End-to-End patient assignment process tests
     Then the patient status is changed to "PENDING_CONFIRMATION" for patient "<patient_id>"
     When a user navigates to the assignment report for the patient "<patient_id>" and analysis id "<analysis_id>" on the UI and clicks "confirm" button
     Then the patient status is changed to "NO_TA_AVAILABLE" for patient "<patient_id>"
-#    When COG sends a REQUEST_NO_ASSIGNMENT message to MATCHBox for patient "<patient_id>"
-#    Then the patient status is changed to "REQUEST_NO_ASSIGNMENT" for patient "<patient_id>"
+    When COG sends a REQUEST_NO_ASSIGNMENT message to MATCHBox for patient "<patient_id>"
+    Then the patient status is changed to "REQUEST_NO_ASSIGNMENT" for patient "<patient_id>"
     Then the user logs out of MATCHBox
     Examples:
       | patient_id | se_id    | mol_id | slide_code | PTEN     | MLH1     | vcfFile    | analysis_id | treatment_arm:stratum     |
