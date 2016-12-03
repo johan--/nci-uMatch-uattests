@@ -10,8 +10,8 @@ exports.config = {
     chromeOnly: true,
     directConnect: true,
     capabilities: {
-        browserName: 'chrome',
-        chromeOptions: {'args': ['--window-size=1690,1000']}
+        browserName: 'firefox',
+        //chromeOptions: {'args': ['--window-size=1690,1000']}
         //firefox_binary: '/Applications/Firefox ESR.app/Contents/MacOS/firefox-bin',
     },
     restartBrowserBetweenTests: false,
