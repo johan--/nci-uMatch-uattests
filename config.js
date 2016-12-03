@@ -8,7 +8,7 @@ exports.config = {
 
     //seleniumAddress: 'http://localhost:4444/wd/hub',
     chromeOnly: true,
-    //directConnect: true,
+    directConnect: true,
     capabilities: {
         browserName: 'chrome',
         chromeOptions: {'args': ['--window-size=1690,1000']}
