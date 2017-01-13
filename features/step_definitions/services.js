@@ -20,8 +20,8 @@ module.exports = function () {
     this.Given(/^Auth0 token is generated$/, function(callback){
         var data = {
             "client_id": process.env.AUTH0_CLIENT_ID ,
-            "username": process.env.ADMIN_AUTH0_USERNAME,
-            "password": process.env.ADMIN_AUTH0_PASSWORD,
+            "username": process.env.NCI_MATCH_USERID,
+            "password": process.env.NCI_MATCH_PASSWORD,
             "grant_type": 'password',
             "scope": 'openid email roles',
             "connection":  process.env.AUTH0_DATABASE
