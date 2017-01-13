@@ -23,13 +23,32 @@ exports.config = {
     ],
 
     getPageTimeout: 10000,
-
     onPrepare: function () {
-        //global.dv = browser;
+        //browser.driver.manage().window().setSize(1600, 900);
+
         global.dv = protractor.browser;
         dv.manage().timeouts().setScriptTimeout(60000);
-        //dv.manage().window().setSize(1600, 1000);
+
+        // Disable animations so e2e tests run more quickly
+        var disableNgAnimate = function () {
+            angular.module('disableNgAnimate', []).run(['$animate', function ($animate) {
+                $animate.enabled(false);
+            }]);
+        };
+
+        dv.addMockModule('disableNgAnimate', disableNgAnimate);
+
+        // Store the name of the browser that's currently being used.
+        dv.getCapabilities().then(function (caps) {
+            dv.params.browser = caps.get('browserName');
+        });
     },
+    //onPrepare: function () {
+    //    //global.dv = browser;
+    //    global.dv = protractor.browser;
+    //    dv.manage().timeouts().setScriptTimeout(60000);
+    //    //dv.manage().window().setSize(1600, 1000);
+    //},
     framework: 'custom',
     frameworkPath: require.resolve('protractor-cucumber-framework'),
     cucumberOpts: {

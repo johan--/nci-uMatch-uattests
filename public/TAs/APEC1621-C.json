@@ -15,16 +15,14 @@
       "pathway" : "ALK"
     }
   ],
-  "exclusionDiseases" : [],
-  "exclusionDrugs" : [],
-  "exclusionCriterias" : [],
+  "diseases" : [],
+  "exclusion_drugs" : [],
   "assay_rules" : [],
-  "num_patients_assigned" : 0,
+  "num_patients_assigned" : null,
   "treatment_arm_status" : "OPEN",
   "snv_indels" : [],
   "copy_number_variants" : [],
   "gene_fusions" : [],
-  "unified_gene_fusions" : [],
   "non_hotspot_rules" : [
     {
       "gene" : "ETV5a",

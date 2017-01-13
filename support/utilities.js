@@ -23,7 +23,7 @@ var Utilities = function() {
 
     this.getMethod = function(route, fn){
         var args = {
-            'headers': {"content-type":"application/json"}
+            headers: {"content-type":"application/json",  "Authorization": browser.idToken }
 
         };
 
@@ -56,15 +56,17 @@ var Utilities = function() {
         };
         var url = route
         console.log("Get URL: "+url);
+        //console.log("token: "+browser.idToken);
         request({
             url: url,
             json:true,
+            headers: {"Authorization": browser.idToken },
             maxAttempts: 5,   // (default) try 5 times
             retryDelay: 10000,  // (default) wait for 5s before trying again
             retryStrategy: myRetryStrategy // retry on 404
         },  function(err, response, body){
             if (response) {
-                console.log(body);
+                //console.log(response);
                 console.log('The number of request attempts: ' + response.attempts);
             }
             fn(body);
@@ -84,39 +86,42 @@ var Utilities = function() {
         request({
             url: url,
             json:true,
+            headers: {"Authorization": browser.idToken },
             maxAttempts: 5,   // (default) try 5 times
             retryDelay: 10000,  // (default) wait for 5s before trying again
             retryStrategy: myRetryStrategy // retry until expected status is received
         },  function(err, response, body){
             if (response) {
-                console.log(body);
+                //console.log(response);
                 console.log('The number of request attempts: ' + response.attempts);
             }
             fn(body);
         });
     };
-    this.postMethod = function(route, data, fn){
+
+    this.postMethod = function(url, body, fn) {
+        var reqBody = body !== undefined ? body : {};
+
         var args = {
-            data: '',
-            headers: {"content-type":"application/json"}
-
+            data: reqBody,
+            headers: {"content-type":"application/json"},
+            "Accept": "application/json"
         };
-        args['data'] = data;
-
-        var url = route;
-        console.log("Post URL: "+url);
+        args['headers'] = browser.idToken != null ? { "content-type":"application/json", 'Authorization': browser.idToken } : {"content-type":"application/json"}
         client.registerMethod("post", url, "POST");
 
-        client.methods.post(args, function (dt, response) {
+
+        client.methods.post(args, function (dt,response) {
             console.log(dt);
             fn(dt);
         });
+
     };
 
     this.putMethod = function(route, data, fn){
         var args = {
             data: '',
-            headers: {"content-type":"application/json"}
+            headers: { "content-type":"application/json", "Authorization": "Bearer " + browser.idToken }
 
         };
         args['data'] = data;
@@ -129,8 +134,6 @@ var Utilities = function() {
             fn(dt);
         });
     };
-
-
 
 };
 
