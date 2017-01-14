@@ -112,7 +112,6 @@ var Utilities = function() {
 
 
         client.methods.post(args, function (dt,response) {
-            console.log(dt);
             fn(dt);
         });
 
