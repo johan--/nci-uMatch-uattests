@@ -7,7 +7,7 @@ class TableDetails
 
   TREATMENT_ARM_ASSIGNMENT_EVENT = {
       name: 'treatment_arm_assignment_event',
-      keys: %w(patient_id assignment_date)
+      keys: %w(treatment_arm_id_stratum_id assignment_date)
   }
 
   PATIENT = {
@@ -45,8 +45,13 @@ class TableDetails
       keys: %w(patient_id variant_report_received_date)
   }
 
-  ION_REPORTERS = {
-      name: 'ion_reporters',
+  ION_REPORTERS_APEC1621SC = {
+      name: 'ion_reporters_APEC1621SC',
+      keys: %w(ion_reporter_id)
+  }
+
+  ION_REPORTERS_EAY131 = {
+      name: 'ion_reporters_EAY131',
       keys: %w(ion_reporter_id)
   }
 
@@ -55,8 +60,29 @@ class TableDetails
       keys: %w(molecular_id)
   }
 
+  TREATMENT_ARM_PENDING = {
+      name: 'treatment_arm_pending',
+      keys: %w(treatment_arm_id version)
+  }
+
+  def self.primary_key(table)
+    raise "#{table} is not a valid Ped-Match table" unless all_tables.include?(table)
+    const_get(table.upcase)[:keys][0]
+  end
+
+  def self.sorting_key(table)
+    raise "#{table} is not a valid Ped-Match table" unless all_tables.include?(table)
+    keys = const_get(table.upcase)[:keys]
+    if keys.size>1
+      keys[1]
+    else
+      puts "#{table} doesn't has sorting key, empty string returned"
+      ''
+    end
+  end
+
   def self.treatment_arm_tables
-    %w(treatment_arm treatment_arm_assignment_event)
+    %w(treatment_arm treatment_arm_assignment_event treatment_arm_pending)
   end
 
   def self.patient_tables
@@ -64,7 +90,7 @@ class TableDetails
   end
 
   def self.ion_tables
-    %w(ion_reporters sample_controls)
+    %w(ion_reporters_APEC1621SC ion_reporters_EAY131 sample_controls)
   end
 
   def self.all_tables
